@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(10, 10, 12, 0.6);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(82, 82, 91, 0.5);
+    border-radius: 9999px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(217, 119, 6, 0.7);
+  }
+  .pb-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+html, body {
+  height: 100%;
+  height: 100dvh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #09090b;
+  color: #f4f4f5;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+
+/* Mesa do Guardião — camada mobile-first adicional */
+:root {
+  color-scheme: dark;
+  --mg-amber: #d69a35;
+  --mg-amber-soft: rgba(214, 154, 53, .14);
+  --mg-panel: #111114;
+  --mg-line: rgba(161, 161, 170, .16);
+}
+* { box-sizing: border-box; }
+button, [role="button"], input, select, textarea {
+  font: inherit;
+}
+button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--mg-amber);
+  outline-offset: 2px;
+}
+input, select, textarea {
+  max-width: 100%;
+  min-width: 0;
+}
+img { max-width: 100%; }
+#root { min-height: 100dvh; width: 100%; }
+.custom-scrollbar { overscroll-behavior: contain; }
+main, aside, section, article { min-width: 0; }
+
+@media (max-width: 767px) {
+  html, body, #root {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100%;
+    height: 100%;
+  }
+  body { overflow: hidden; }
+  button, [role="button"] { touch-action: manipulation; }
+  input, select, textarea { font-size: 16px !important; }
+  .custom-scrollbar { scrollbar-width: none; }
+  .custom-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Hub: largura integral, formulários em coluna e cartões sem overflow */
+  #root > * { width: 100%; max-width: 100vw; }
+  #root header { max-width: 100%; }
+  #root main, #root aside { max-width: 100%; }
+  .grid { min-width: 0; }
+  [class*="max-w-6xl"], [class*="max-w-5xl"], [class*="max-w-4xl"] {
+    max-width: 100%;
+  }
+
+  /* Modais e gavetas usam a altura dinâmica real do navegador Android */
+  [class*="fixed"][class*="inset-0"] {
+    overscroll-behavior: contain;
+  }
+  [class*="max-h-"] {
+    max-height: min(92dvh, 900px);
+  }
+
+  /* Áreas de toque e leitura */
+  button, a, [role="button"] { min-height: 40px; }
+  p, li { overflow-wrap: anywhere; }
+}
+
+/* Em aparelhos muito estreitos, os cartões continuam empilhados sem criar scroll lateral. */
+@media (max-width: 359px) {
+  .px-4 { padding-left: .75rem; padding-right: .75rem; }
+  .gap-4 { gap: .75rem; }
+  .text-xs { line-height: 1.4; }
+}
+
+/* Reduz movimento não essencial quando o sistema operacional solicita. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

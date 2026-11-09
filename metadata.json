@@ -1,0 +1,7 @@
+{
+  "name": "Mesa do Guardião - Monstro da Semana VTT",
+  "description": "Virtual Tabletop multiplayer para Monstro da Semana RPG. Crie campanhas, personagens caçadores, investigue mistérios, role dados 2d6 e enfrente ameaças sobrenaturais em tempo real.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
