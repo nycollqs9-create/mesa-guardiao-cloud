@@ -1,0 +1,1407 @@
+ATUALIZAÇÃO COMPLETA DO PROJETO — MESA DO GUARDIÃO VTT
+
+Monstro da Semana — Evolução para uma plataforma multiplayer completa
+
+Você é um engenheiro de software Full Stack sênior, especialista em React, TypeScript, Node.js, Firebase, sistemas multiplayer, Virtual Tabletop e interfaces de RPG.
+
+Sua tarefa é CONTINUAR O DESENVOLVIMENTO DO PROJETO EXISTENTE chamado MESA DO GUARDIÃO.
+
+O projeto já possui:
+
+- Interface em React e TypeScript.
+- Lobby de campanhas.
+- Criação e entrada em campanhas.
+- Sistema de fichas.
+- Criador de personagens.
+- Movimentos básicos.
+- Movimentos das cartilhas.
+- Rolador 2d6.
+- Chat.
+- Painel do Guardião.
+- Cenas.
+- Mistérios.
+- Ameaças.
+- Diário.
+- Contagem regressiva.
+- Marcadores de dano, Sorte e experiência.
+
+Não recomece o projeto do zero.
+
+Analise os arquivos existentes e aperfeiçoe a implementação. Preserve todos os componentes que funcionam corretamente e aproveite a arquitetura atual sempre que possível.
+
+Arquivos importantes do projeto:
+
+- src/App.tsx
+- src/context/VTTContext.tsx
+- src/types/motw.ts
+- src/components/LobbyView.tsx
+- src/components/SidebarLeft.tsx
+- src/components/SidebarRight.tsx
+- src/components/CenterStage.tsx
+- src/components/HeaderNav.tsx
+- src/components/CharacterCreatorModal.tsx
+- src/components/CharacterSheetModal.tsx
+- src/components/RollModal.tsx
+- src/data/motwBasicMoves.ts
+- src/data/motwPlaybooks.ts
+- src/data/keeperReference.ts
+- src/utils/dice.ts
+- server.ts
+- server/db.ts
+
+Leia esses arquivos antes de fazer mudanças.
+
+Os três PDFs de Monstro da Semana já foram utilizados como referência deste projeto. Consulte os arquivos de referência presentes no projeto quando precisar verificar regras.
+
+O resultado deve ser um aplicativo funcional, não apenas uma demonstração visual.
+
+1. OBJETIVO DA ATUALIZAÇÃO
+
+Quero transformar a Mesa do Guardião em uma plataforma VTT especializada em Monstro da Semana, com duas experiências muito bem desenvolvidas:
+
+EXPERIÊNCIA DO GUARDIÃO
+
+O Guardião deve conseguir criar, organizar, planejar, preparar e conduzir campanhas com bastante liberdade.
+
+Ele precisa ter ferramentas para preparar mistérios inteiros antecipadamente, criar cenários, organizar cenas, cadastrar ameaças, preparar pistas, organizar personagens secundários e decidir exatamente o que será apresentado aos jogadores durante a sessão.
+
+EXPERIÊNCIA DOS CAÇADORES
+
+Os jogadores devem conseguir criar personagens, administrar fichas, acompanhar sua evolução, consultar movimentos, rolar dados, conversar, acompanhar cenas e participar da investigação.
+
+O site deve permitir que todos utilizem a mesma campanha em tempo real por diferentes celulares e computadores.
+
+Prioridades:
+
+1. Segurança e privacidade.
+2. Multiplayer verdadeiro.
+3. Regras corretas.
+4. Experiência do jogador.
+5. Ferramentas avançadas do Guardião.
+6. Responsividade mobile.
+7. Estética e facilidade de uso.
+
+2. EXCLUSÃO E GERENCIAMENTO DE CAMPANHAS
+
+Implemente a possibilidade de excluir campanhas.
+
+Atualmente não existe uma rota completa de exclusão de campanhas no servidor. Crie essa funcionalidade.
+
+Para o Guardião
+
+O criador da campanha poderá abrir as opções da campanha e encontrar:
+
+- Editar campanha.
+- Copiar código de convite.
+- Gerenciar participantes.
+- Arquivar campanha.
+- Excluir campanha.
+
+A exclusão deverá possuir uma confirmação clara.
+
+Para evitar acidentes, solicite que o Guardião confirme a operação digitando o nome da campanha ou realizando uma segunda confirmação explícita.
+
+Ao excluir:
+
+- Remova a campanha do banco de dados.
+- Remova as mensagens relacionadas.
+- Remova os mistérios e arquivos associados.
+- Remova as referências dos personagens.
+- Remova os registros relacionados.
+- Exclua os arquivos de mídia vinculados, quando não forem utilizados em outras campanhas.
+- Invalide o código de convite.
+- Atualize a lista de campanhas dos participantes.
+- Limpe a campanha ativa caso algum usuário esteja nela.
+
+Apenas o Guardião responsável pela campanha poderá excluí-la.
+
+Para os jogadores
+
+Jogadores comuns não poderão excluir campanhas.
+
+Eles devem ter a opção:
+
+SAIR DA CAMPANHA.
+
+Ao sair:
+
+- Remova sua participação.
+- Preserve o restante da campanha.
+- Não apague personagens dos outros jogadores.
+- Atualize a lista de participantes.
+
+Diferencie claramente SAIR, ARQUIVAR e EXCLUIR.
+
+Lobby de campanhas
+
+Melhore os cartões de campanha.
+
+Mostre:
+
+- Nome.
+- Imagem de capa.
+- Nome do Guardião.
+- Número de participantes.
+- Data da última atividade.
+- Situação da campanha.
+- Botão para entrar ou continuar.
+- Menu de opções conforme as permissões.
+
+Crie as categorias:
+
+- Minhas campanhas.
+- Campanhas das quais participo.
+- Campanhas arquivadas.
+
+Campanhas privadas não devem aparecer publicamente para pessoas que não possuem autorização.
+
+3. EXPERIÊNCIA DOS JOGADORES E EVOLUÇÃO DOS CAÇADORES
+
+Essa funcionalidade merece atenção especial.
+
+Quero que os jogadores sintam que seus personagens estão evoluindo conforme a campanha avança.
+
+Atualmente existem os campos "experience" e "levelUpsTaken" na ficha, mas não há uma experiência visual completa e bem integrada de progressão.
+
+Transforme isso em um sistema claro e atraente.
+
+Painel de progressão do personagem
+
+Na ficha do caçador, crie uma área de progressão com:
+
+- Nível atual.
+- Quantidade de evoluções realizadas.
+- Experiência atual.
+- Barra visual de progresso.
+- Quantidade de experiência necessária para a próxima evolução.
+- Histórico das melhorias escolhidas.
+- Próxima melhoria disponível.
+
+Apresente visualmente um exemplo:
+
+NÍVEL 1
+
+Experiência: 3/5
+
+[Barra de progresso]
+
+PRÓXIMA EVOLUÇÃO: 2 XP restantes.
+
+Quando alcançar cinco pontos de experiência, apresente uma notificação destacada:
+
+SEU CAÇADOR SUBIU DE NÍVEL!
+
+Seu personagem pode escolher uma nova melhoria.
+
+O número do nível deve aumentar após a evolução.
+
+Como o sistema original utiliza marcadores de experiência e melhorias, trate o número de nível como uma representação visual da progressão da plataforma, sem criar regras mecânicas adicionais ou substituir a lógica do livro.
+
+O nível inicial deverá ser exibido de forma consistente e o contador deverá permanecer salvo entre sessões.
+
+Notificações para os jogadores
+
+Quando o Guardião conceder experiência a alguém, esse jogador deverá perceber a mudança imediatamente.
+
+Implemente:
+
+- Notificação na tela.
+- Atualização da ficha em tempo real.
+- Atualização da barra de progresso.
+- Registro no chat da campanha.
+- Histórico de experiência.
+- Notificação especial quando atingir a próxima evolução.
+
+Quando um jogador subir de nível, ele deverá visualizar a nova evolução mesmo que esteja com a ficha fechada.
+
+Se houver mais de uma evolução pendente, apresente todas sem perder nenhuma.
+
+Ferramenta de experiência para o Guardião
+
+Crie dentro do painel do Guardião uma opção chamada:
+
+GERENCIAR EXPERIÊNCIA.
+
+O Guardião poderá:
+
+- Selecionar um jogador.
+- Selecionar um personagem.
+- Conceder XP.
+- Remover XP quando necessário.
+- Conceder XP para todos.
+- Visualizar o progresso de cada caçador.
+- Consultar o histórico.
+- Informar o motivo da concessão.
+
+Exemplos de motivos:
+
+- Final de sessão.
+- Movimento específico.
+- Recompensa narrativa.
+- Ajuste autorizado do Guardião.
+
+Sempre que houver uma alteração, o jogador afetado deverá ser notificado.
+
+O Guardião também deverá visualizar uma tabela com todos os personagens e seus níveis, experiências e melhorias pendentes.
+
+Regras de experiência
+
+Respeite o livro:
+
+- Sempre que uma rolagem de movimento resultar em 6 ou menos, o caçador marca experiência.
+- Movimentos específicos também podem conceder experiência.
+- Ao completar cinco caixas, o personagem sobe uma evolução e escolhe uma melhoria.
+- As cinco caixas são limpas depois da evolução, preservando eventual XP excedente.
+- Depois de cinco evoluções, ficam disponíveis as melhorias avançadas conforme as regras.
+
+Não conceda experiência duplicada quando uma mesma ação já tiver sido contabilizada por outro mecanismo.
+
+Escolha das melhorias
+
+Quando o jogador subir de nível:
+
+1. Abra uma tela de evolução.
+2. Apresente as melhorias permitidas pela cartilha.
+3. Identifique as escolhas disponíveis e as já utilizadas.
+4. Valide os limites de classificações.
+5. Atualize os movimentos e atributos.
+6. Salve a melhoria.
+7. Atualize o nível e o histórico.
+8. Informe o Guardião.
+
+O Guardião poderá acompanhar e, se a campanha utilizar essa regra da mesa, aprovar a escolha.
+
+Não permita que um jogador escolha melhorias proibidas pela própria cartilha.
+
+4. TRANSFORMAR O PAINEL DO GUARDIÃO EM UMA CENTRAL DE PREPARAÇÃO
+
+Gosto da organização que já existe no sistema do Guardião.
+
+Quero manter:
+
+- Cenas.
+- Mistérios.
+- Ameaças.
+- Diário.
+- Contagem regressiva.
+- Referência de regras.
+- Final de sessão.
+
+Porém, essas ferramentas precisam se tornar muito mais completas.
+
+Atualmente o Guardião consegue criar uma cena, adicionar ameaças e cadastrar anotações. Quero evoluir isso para um verdadeiro ambiente de preparação de campanhas.
+
+A principal mudança será separar duas áreas:
+
+PREPARAÇÃO DA CAMPANHA
+
+Onde o Guardião cria e organiza tudo antecipadamente, sem revelar automaticamente essas informações aos jogadores.
+
+MESA AO VIVO
+
+Onde ele conduz a sessão, ativa os cenários preparados, revela pistas, altera as cenas e controla o que os jogadores visualizam.
+
+Essas duas áreas devem estar conectadas.
+
+O Guardião precisa conseguir preparar uma campanha inteira antes mesmo de convidar os jogadores.
+
+5. NOVA CENTRAL DE PLANEJAMENTO DO GUARDIÃO
+
+Crie uma seção exclusiva chamada:
+
+CENTRAL DO GUARDIÃO.
+
+Ela deve funcionar como um painel de controle da campanha.
+
+Apresente:
+
+- Visão geral da campanha.
+- Planejamento dos arcos.
+- Biblioteca de mistérios.
+- Planejamento de cenas.
+- Banco de ameaças.
+- Biblioteca de NPCs.
+- Biblioteca de locais.
+- Gerenciador de pistas.
+- Diário privado.
+- Preparação de sessões.
+- Histórico das sessões.
+
+Essa central não deve parecer apenas uma lista de formulários.
+
+Organize os recursos em cartões, painéis, abas e áreas de trabalho.
+
+Visão geral da campanha
+
+Mostre:
+
+- Nome da campanha.
+- Conceito.
+- Tema principal.
+- Ambientação.
+- Número de caçadores.
+- Mistério atual.
+- Última sessão realizada.
+- Próxima sessão planejada.
+- Arcos ativos.
+- Mistérios preparados.
+- Mistérios concluídos.
+
+Adicione uma seção de anotações gerais do Guardião.
+
+6. PLANEJAMENTO DE ARCOS E HISTÓRIA DA CAMPANHA
+
+Quero que o Guardião consiga planejar a história de longo prazo.
+
+Crie um planejador de arcos.
+
+O Guardião poderá cadastrar:
+
+- Nome do arco.
+- Conceito.
+- Objetivo central.
+- Tema.
+- Antagonistas.
+- Ameaças relacionadas.
+- Mistérios relacionados.
+- Eventos importantes.
+- Segredos.
+- Possíveis consequências.
+- Anotações privadas.
+- Situação do arco.
+
+Os arcos podem ter os estados:
+
+IDEIA, EM PLANEJAMENTO, ATIVO, CONCLUÍDO e ARQUIVADO.
+
+Permita relacionar diversos mistérios a um mesmo arco.
+
+Por exemplo:
+
+ARCO: O Culto da Lua Vermelha.
+
+Mistério 1: O desaparecimento em Blackwood.
+
+Mistério 2: As marcas nas portas.
+
+Mistério 3: O ritual subterrâneo.
+
+Mistério 4: O retorno da entidade.
+
+O Guardião deve conseguir visualizar como os acontecimentos se conectam.
+
+Crie uma linha do tempo dos acontecimentos importantes da campanha.
+
+As informações de planejamento devem permanecer privadas até o Guardião decidir compartilhá-las.
+
+7. BIBLIOTECA E PLANEJAMENTO DE MISTÉRIOS
+
+A estrutura atual de criação de mistérios deve ser aprimorada.
+
+Crie uma biblioteca de mistérios onde o Guardião possa guardar vários mistérios antes de utilizá-los.
+
+Cada mistério deve possuir os campos:
+
+- Nome.
+- Conceito básico.
+- Descrição.
+- Gancho.
+- Situação inicial.
+- Problema central.
+- Objetivo da ameaça.
+- O que acontece se os caçadores não intervirem.
+- Acontecimentos futuros.
+- Ameaças.
+- Monstro principal.
+- Lacaios.
+- Espectadores.
+- Locais.
+- Pistas.
+- Contagem regressiva.
+- Anotações privadas.
+
+Crie os estados:
+
+- Ideia.
+- Rascunho.
+- Preparado.
+- Em andamento.
+- Resolvido.
+- Arquivado.
+
+O Guardião poderá:
+
+- Criar mistério.
+- Editar.
+- Duplicar.
+- Excluir.
+- Arquivar.
+- Consultar.
+- Relacionar com um arco.
+- Definir como mistério atual.
+
+Um mistério preparado não deverá aparecer automaticamente aos jogadores.
+
+Quando o Guardião selecionar INICIAR MISTÉRIO, o sistema deverá transferir ou ativar suas informações na mesa ao vivo.
+
+Não sobrescreva ou perca mistérios anteriores.
+
+Permita manter mistérios arquivados e consultar seu histórico.
+
+8. SISTEMA AVANÇADO DE CENAS
+
+Esse é um dos recursos que mais quero melhorar.
+
+Gosto da ideia de o Guardião preparar vários cenários e depois ir colocando cada um na mesa conforme a história avança.
+
+Aperfeiçoe muito essa função.
+
+Biblioteca de cenas
+
+O Guardião deverá conseguir criar cenas antecipadamente.
+
+Cada cena deverá possuir:
+
+- Nome.
+- Descrição pública.
+- Imagem de fundo.
+- Local relacionado.
+- Personagens presentes.
+- Ameaças presentes.
+- Pistas disponíveis.
+- Pistas secretas.
+- Eventos que podem acontecer.
+- Anotações privadas.
+- Próxima cena sugerida.
+- Relação com o mistério.
+
+Permita preparar uma sequência de cenas.
+
+Exemplo:
+
+1. Delegacia de Blackwood.
+2. Casa da primeira vítima.
+3. Floresta abandonada.
+4. Antigo cemitério.
+5. Túnel subterrâneo.
+
+O Guardião poderá:
+
+- Criar cenas.
+- Editar cenas.
+- Excluir cenas.
+- Duplicar cenas.
+- Reordenar cenas.
+- Criar pastas.
+- Associar imagens.
+- Pré-visualizar.
+- Selecionar a próxima cena.
+
+Estados das cenas
+
+Implemente:
+
+RASCUNHO: somente o Guardião visualiza.
+
+PREPARADA: pronta para ser utilizada.
+
+ATIVA: exibida para todos os participantes.
+
+ARQUIVADA: cena antiga, preservada no histórico.
+
+O Guardião poderá preparar dez ou vinte cenas sem que os jogadores saibam que elas existem.
+
+Quando escolher ATIVAR CENA, a cena deverá aparecer imediatamente para todos os jogadores conectados.
+
+O sistema deverá sincronizar:
+
+- Imagem.
+- Nome.
+- Descrição.
+- Pistas reveladas.
+- Mudanças realizadas.
+
+Sequência de cenas
+
+Crie uma área chamada PRÓXIMAS CENAS.
+
+Ela funcionará como uma fila de cenários preparados.
+
+O Guardião poderá reorganizar a sequência e escolher qualquer cena para ativar, sem precisar seguir obrigatoriamente a ordem.
+
+Não exponha a fila de cenas futuras para os jogadores.
+
+A cena ativa deve ficar em destaque.
+
+9. FERRAMENTAS DE CONTROLE DA SESSÃO
+
+Na mesa ao vivo, quero que o Guardião tenha controles rápidos.
+
+Implemente um painel com:
+
+- Cena atual.
+- Próximas cenas.
+- Mistério atual.
+- Contagem regressiva.
+- Ameaças ativas.
+- Participantes.
+- Personagens dos jogadores.
+- Pistas reveladas.
+- Anotações rápidas.
+- Histórico de acontecimentos.
+
+Crie uma barra de ações rápidas:
+
+- Ativar próxima cena.
+- Revelar pista.
+- Anunciar acontecimento.
+- Avançar contagem regressiva.
+- Aplicar dano.
+- Conceder experiência.
+- Abrir ficha de personagem.
+- Criar ameaça rápida.
+
+Todas as ações devem respeitar as permissões.
+
+O Guardião deverá conseguir fazer essas alterações sem precisar abandonar a cena principal e procurar diversas abas.
+
+10. GERENCIADOR AVANÇADO DE AMEAÇAS
+
+Melhore a ferramenta existente.
+
+Permita cadastrar e organizar:
+
+MONSTROS:
+
+- Nome.
+- Motivação.
+- Aparência.
+- Descrição.
+- Poderes.
+- Fraquezas.
+- Ataques.
+- Dano.
+- Armadura.
+- Capacidade de dano.
+- Movimentos personalizados.
+- Imagem.
+
+LACAIOS:
+
+- Nome.
+- Motivação.
+- Mestre.
+- Aparência.
+- Poderes.
+- Fraquezas.
+- Ataques.
+- Armadura.
+- Capacidade de dano.
+- Imagem.
+
+ESPECTADORES:
+
+- Nome.
+- Motivação.
+- Aparência.
+- Informações conhecidas.
+- O que fazem.
+- Relação com os caçadores.
+- Imagem.
+
+LOCAIS:
+
+- Nome.
+- Motivação.
+- Aparência.
+- Descrição.
+- Segredos.
+- Características.
+- Movimentos personalizados.
+- Imagem.
+
+Cada ameaça deve poder ser relacionada a vários mistérios e cenas.
+
+Crie uma biblioteca reutilizável para o Guardião não precisar cadastrar o mesmo NPC ou monstro novamente.
+
+Permita duplicar modelos e alterar suas características para outros mistérios.
+
+11. CONTROLE DE PISTAS E REVELAÇÕES
+
+Crie um gerenciador de pistas.
+
+Cada pista poderá ter:
+
+- Nome.
+- Descrição.
+- Origem.
+- Cena relacionada.
+- Mistério relacionado.
+- Ameaça relacionada.
+- Informação revelada.
+- Anotação privada.
+- Estado de descoberta.
+
+Estados:
+
+- Oculta.
+- Disponível.
+- Revelada.
+- Descoberta pelos caçadores.
+- Arquivada.
+
+O Guardião poderá revelar uma pista para:
+
+- Todos os jogadores.
+- Um jogador específico.
+- Um personagem específico.
+
+A informação só deve ser entregue ao público autorizado.
+
+Os jogadores deverão ter uma área chamada PISTAS DESCOBERTAS.
+
+Ela mostra apenas o que já foi revelado.
+
+12. CONTAGEM REGRESSIVA DO MISTÉRIO
+
+Preserve a contagem regressiva atual e melhore sua usabilidade.
+
+Os seis estágios devem continuar sendo:
+
+1. Dia.
+2. Sombras.
+3. Entardecer.
+4. Poente.
+5. Anoitecer.
+6. Meia-noite.
+
+O Guardião deverá:
+
+- Editar o acontecimento de cada estágio.
+- Preparar os seis eventos antes da sessão.
+- Visualizar a linha do tempo completa.
+- Avançar a contagem.
+- Consultar o histórico.
+- Reverter uma etapa quando necessário, com confirmação.
+- Reiniciar a contagem para outro mistério.
+
+Os eventos futuros devem ser privados.
+
+Quando um estágio for acionado, o Guardião poderá decidir se anuncia somente o avanço ou também revela a descrição do acontecimento aos jogadores.
+
+Não revele automaticamente todas as etapas da contagem regressiva.
+
+13. PREPARAÇÃO E HISTÓRICO DAS SESSÕES
+
+Crie um gerenciador de sessões.
+
+O Guardião poderá criar uma sessão com:
+
+- Número.
+- Nome.
+- Data.
+- Mistério relacionado.
+- Objetivos.
+- Cenas planejadas.
+- Ameaças planejadas.
+- Anotações de preparação.
+
+Durante a sessão, poderá registrar:
+
+- Acontecimentos importantes.
+- Decisões dos personagens.
+- Pistas descobertas.
+- Alterações no mistério.
+- Situação dos caçadores.
+
+Ao finalizar:
+
+- Registrar resumo.
+- Registrar XP concedido.
+- Salvar acontecimentos.
+- Atualizar histórico.
+- Preparar a próxima sessão.
+
+O Guardião deverá conseguir consultar sessões antigas.
+
+Crie uma função para copiar o resumo da sessão, facilitando compartilhar com os jogadores.
+
+14. MELHORIAS NA EXPERIÊNCIA DOS JOGADORES
+
+Crie uma área pessoal para cada jogador.
+
+Ao entrar na campanha, ele deve encontrar claramente:
+
+- Seu caçador.
+- Sua ficha.
+- Seu nível.
+- Sua experiência.
+- Sua Sorte.
+- Seu dano.
+- Seus movimentos.
+- Suas melhorias pendentes.
+- Sua atividade recente.
+
+O jogador não deve precisar procurar sua ficha entre diversos painéis.
+
+Crie uma área chamada MEU CAÇADOR.
+
+Ela deverá apresentar todas as informações importantes.
+
+Também deverá existir:
+
+- Caderno pessoal.
+- Diário compartilhado.
+- Pistas descobertas.
+- Histórico de rolagens.
+- Histórico de evolução.
+- Equipamentos.
+- Relacionamentos.
+- Objetivos pessoais.
+
+As anotações pessoais devem permanecer privadas.
+
+O jogador poderá visualizar as cenas que o Guardião ativou e os arquivos que foram compartilhados com ele.
+
+Não deixe o jogador visualizar cenas futuras, ameaças secretas ou anotações privadas.
+
+15. GALERIA E ENVIO DE IMAGENS DO CELULAR
+
+Substitua os campos de URL de imagem por um sistema de upload.
+
+Isso deve funcionar em todas as áreas do projeto.
+
+Ao clicar em ADICIONAR IMAGEM, abra o seletor nativo de arquivos do dispositivo.
+
+O jogador ou Guardião poderá escolher fotos armazenadas no celular.
+
+Use seleção por arquivo, sem solicitar acesso irrestrito à galeria.
+
+Permita imagens da câmera quando suportado pelo navegador.
+
+Implemente:
+
+- Pré-visualização.
+- Recorte.
+- Substituição.
+- Remoção.
+- Compressão.
+- Indicador de envio.
+- Tratamento de erros.
+
+Use Firebase Storage ou armazenamento de arquivos equivalente configurado corretamente.
+
+Imagens de perfil, fichas, cenas e ameaças devem continuar disponíveis em outros dispositivos.
+
+Não utilize URL como método principal para adicionar fotos.
+
+16. CORREÇÕES NAS REGRAS DE MONSTRO DA SEMANA
+
+Consulte novamente os PDFs da edição brasileira utilizada no projeto.
+
+Corrija os movimentos básicos e os movimentos das cartilhas.
+
+Correções já identificadas no código:
+
+- Proteger Alguém utiliza Braveza.
+- Dar uma Mão deve respeitar o nome e os resultados corretos.
+- Perceber uma Enrascada deve utilizar Esperteza e seus resultados próprios.
+- O bônus de Perceber uma Enrascada deve respeitar sua natureza constante enquanto a informação for relevante.
+- Partir pra Porrada deve respeitar os resultados de 7+, 10+ e 12+.
+- Manipular Alguém deve distinguir as situações e os alvos.
+- Usar Magia deve respeitar a escolha de efeito e defeito em resultados parciais.
+
+Não transforme os movimentos em testes genéricos.
+
+Cada um precisa possuir sua própria lógica.
+
+Rolagens
+
+Use dois dados de seis faces (2d6) mais a classificação correspondente.
+
+Resultados:
+
+- 6 ou menos: falha.
+- 7–9: sucesso parcial.
+- 10 ou mais: sucesso.
+- 12 ou mais: efeitos avançados quando o movimento permitir.
+
+Apresente:
+
+- Nome do personagem.
+- Movimento.
+- Dados individuais.
+- Classificação.
+- Modificadores.
+- Resultado.
+- Interpretação específica.
+
+A geração dos dados deve acontecer no servidor, com aleatoriedade segura.
+
+O servidor deve verificar a ficha real e não confiar em classificações enviadas pelo navegador.
+
+Corrigir o modal de rolagens
+
+Analise a integração entre:
+
+- App.tsx.
+- RollModal.tsx.
+- CharacterSheetModal.tsx.
+- motwBasicMoves.ts.
+
+Corrija o problema em que o modal pode abrir com o movimento anterior ou não receber corretamente o nome do movimento selecionado.
+
+Todos os botões devem abrir a ação correspondente.
+
+Os movimentos específicos das cartilhas também devem funcionar.
+
+Histórico de rolagens
+
+Implemente registros compartilhados em tempo real.
+
+Modos:
+
+- Pública.
+- Privada.
+- Cega.
+- Individual.
+
+Valide a visibilidade no servidor, não apenas na interface.
+
+17. CORRIGIR A SORTE
+
+A Sorte deve produzir seu efeito real.
+
+O jogador deverá escolher entre:
+
+1. Transformar uma rolagem recém-realizada em 12.
+2. Reduzir a zero o dano de um ferimento recém-sofrido.
+
+Atualize o marcador de Sorte, o resultado da rolagem ou o dano e o histórico.
+
+Implemente a operação com validação e controle de transação para não consumir Sorte sem aplicar o efeito.
+
+18. DANO, ARMADURA E CURA
+
+Preserve o marcador de dano.
+
+Implemente corretamente:
+
+- Aplicação de dano.
+- Redução por armadura.
+- Ferimentos instáveis.
+- Estabilização.
+- Cura.
+- Histórico.
+
+Siga o livro:
+
+- Ferimentos de 0 dano possuem efeitos menores.
+- Ferimentos de 4–7 são sérios e instáveis.
+- 8 ou mais podem ser fatais para caçadores humanos.
+
+O Guardião deverá ter controles de aplicação e correção do dano.
+
+Não automatize decisões narrativas que pertencem ao Guardião.
+
+19. FICHA E CRIAÇÃO DE PERSONAGENS
+
+Preserve o criador de caçadores existente, mas aperfeiçoe sua usabilidade.
+
+As 13 cartilhas devem continuar disponíveis:
+
+1. O Arcano.
+2. O Delinquente.
+3. O Divino.
+4. O Escolhido.
+5. O Especialista.
+6. O Iniciado.
+7. O Injustiçado.
+8. O Lunático.
+9. O Monstruoso.
+10. O Mundano.
+11. O Profissional.
+12. O Sinistro.
+13. O Viajante.
+
+A criação deverá contemplar:
+
+- Identidade.
+- Cartilha.
+- Aparência.
+- Classificações.
+- Movimentos.
+- Equipamentos.
+- Características especiais.
+- Histórico.
+- Relacionamentos.
+
+As cinco classificações são:
+
+- Braveza.
+- Esperteza.
+- Estranheza.
+- Firmeza.
+- Sutileza.
+
+Respeite as distribuições permitidas pelas cartilhas.
+
+O personagem deve ter:
+
+- Dano.
+- Sorte.
+- Experiência.
+- Evoluções.
+- Melhorias.
+- Movimentos.
+- Armas.
+- Equipamentos.
+- Histórico.
+
+Não utilize a mesma quantidade de Sorte para todas as cartilhas sem consultar seus respectivos marcadores.
+
+O Guardião consegue visualizar as fichas de todos os participantes.
+
+Os jogadores não podem editar fichas alheias.
+
+20. CHAT E COMUNICAÇÃO
+
+Preserve o chat atual e melhore sua utilização.
+
+Implemente:
+
+- Mensagens normais.
+- Mensagens em personagem.
+- Avisos do Guardião.
+- Mensagens privadas.
+- Resultados de dados.
+- Notificações de nível.
+- Notificações de XP.
+- Histórico.
+- Identificação de participantes.
+
+A atualização deve acontecer sem precisar recarregar a página.
+
+Permita recolher e expandir o chat.
+
+No celular, o chat deve funcionar como uma gaveta inferior ou uma aba.
+
+21. SEGURANÇA E MIGRAÇÃO DO BANCO DE DADOS
+
+O projeto atual utiliza identificação local em localStorage e arquivos JSON no servidor.
+
+Isso não é suficiente para uma plataforma multiplayer publicada.
+
+Faça a migração para:
+
+- Firebase Authentication.
+- Firebase Firestore.
+- Firebase Storage.
+
+Se essas integrações estiverem disponíveis, configure-as de maneira real.
+
+Se ainda forem necessários dados de configuração, crie os campos de ambiente e explique exatamente o que falta configurar.
+
+Não finja que a autenticação está configurada quando não estiver.
+
+Faça uma migração cuidadosa dos dados existentes, se houver dados que precisem ser preservados.
+
+Use o Firestore para armazenar:
+
+- Usuários.
+- Campanhas.
+- Participantes.
+- Personagens.
+- Mistérios.
+- Cenas.
+- Ameaças.
+- Pistas.
+- Arcos.
+- Sessões.
+- Mensagens.
+- Rolagens.
+- Registros de progressão.
+
+Use armazenamento de arquivos para imagens.
+
+Implemente regras de segurança rigorosas.
+
+Verifique a identidade dos usuários no servidor.
+
+Não confie em identificadores, nomes ou papéis enviados pelo navegador.
+
+Não envie informações privadas do Guardião ao cliente.
+
+O Guardião deve ter acesso aos dados administrativos.
+
+Os jogadores só devem receber dados compartilhados ou autorizados.
+
+Proteja:
+
+- Notas privadas.
+- Cenas futuras.
+- Mistérios não revelados.
+- Fraquezas secretas.
+- Pistas ocultas.
+- Contagem regressiva futura.
+- Mensagens privadas.
+
+Utilize listeners em tempo real e atualizações consistentes.
+
+O histórico de evolução, concessão de XP, danos e rolagens deve ser persistente.
+
+22. DESIGN E ESTÉTICA
+
+Preserve a identidade visual que já existe.
+
+Gosto da combinação:
+
+- Preto.
+- Cinza carvão.
+- Vermelho escuro.
+- Dourado envelhecido.
+
+Não quero uma mudança radical de identidade.
+
+Quero uma interface mais profissional, organizada, atmosférica e fácil de utilizar.
+
+A inspiração deve continuar sendo:
+
+- Foundry VTT.
+- Arquivos de investigação sobrenatural.
+- Sistemas de RPG modernos.
+- Centrais de investigação.
+- Ambientes de mistério e horror.
+
+Aperfeiçoe:
+
+- Cards.
+- Botões.
+- Menus.
+- Hierarquia dos textos.
+- Espaçamento.
+- Ícones.
+- Indicadores.
+- Animações.
+- Estados de carregamento.
+- Mensagens de erro.
+- Feedback de sucesso.
+
+Não utilize exageradamente efeitos ou animações que dificultem a leitura.
+
+A interface deve ser bonita, mas principalmente funcional.
+
+23. ADAPTAÇÃO REAL PARA CELULAR — PRIORIDADE ALTA
+
+O projeto atual foi desenvolvido com foco em computadores.
+
+O código principal utiliza uma organização em três colunas, alturas e larguras fixas, painéis laterais e fontes muito pequenas.
+
+Quero que o site seja reconstruído responsivamente.
+
+Não basta diminuir o tamanho dos elementos.
+
+Crie uma experiência própria para celular.
+
+Computador
+
+Mantenha a organização inspirada no Foundry:
+
+- Barra superior.
+- Painel esquerdo.
+- Cena central.
+- Chat e painel direito.
+
+Permita recolher os painéis laterais para aumentar o espaço da cena.
+
+Celular
+
+Em telas pequenas, abandone a disposição obrigatória de três colunas.
+
+Implemente uma navegação inferior com:
+
+1. Cenas.
+2. Caçadores.
+3. Mistério.
+4. Dados.
+5. Chat.
+
+As opções do Guardião devem aparecer conforme seu papel.
+
+Cada painel deve abrir em uma tela confortável ou gaveta adaptada ao celular.
+
+A tela de cenas deve ocupar a maior área possível.
+
+A ficha deve ser acessível em tela completa.
+
+O rolador deve possuir botões grandes e fáceis de tocar.
+
+O chat deve abrir sem ocupar permanentemente toda a interface.
+
+O painel do Guardião deve ter telas de administração próprias para celular.
+
+Responsividade obrigatória
+
+Teste pelo menos:
+
+- 320 px.
+- 360 px.
+- 390 px.
+- 430 px.
+- 768 px.
+- 1024 px.
+- 1366 px ou superior.
+
+Remova larguras rígidas que provoquem cortes.
+
+Revise o uso de "h-screen", "w-screen", "overflow-hidden", larguras fixas e barras laterais.
+
+Considere "100dvh", áreas seguras do celular e rolagem adequada.
+
+Evite rolagem horizontal desnecessária.
+
+As modais precisam caber na tela e possuir rolagem interna quando necessário.
+
+Aumente fontes pequenas.
+
+Como referência, utilize texto normal confortável, preferencialmente 14–16 px, e botões com áreas de toque de pelo menos 44–48 px.
+
+Não impeça o usuário de selecionar e copiar textos importantes.
+
+Garanta que o celular não pareça simplesmente uma versão apertada do computador.
+
+24. ORGANIZAÇÃO DA NAVEGAÇÃO
+
+Reorganize o sistema para que cada usuário veja suas ferramentas de acordo com seu papel.
+
+Guardião
+
+- Visão geral.
+- Central de planejamento.
+- Arcos.
+- Mistérios.
+- Cenas.
+- Ameaças.
+- Pistas.
+- NPCs.
+- Locais.
+- Diário.
+- Sessões.
+- Jogadores.
+- Experiência.
+- Mesa ao vivo.
+- Configurações.
+
+Caçador
+
+- Minha ficha.
+- Meu progresso.
+- Movimentos.
+- Rolagens.
+- Cenas atuais.
+- Pistas descobertas.
+- Grupo.
+- Diário compartilhado.
+- Chat.
+- Histórico.
+
+Não mostre opções administrativas aos caçadores comuns.
+
+25. RECURSOS ADICIONAIS
+
+Acrescente um quadro de investigação compartilhado.
+
+Os jogadores poderão:
+
+- Organizar pistas reveladas.
+- Criar teorias.
+- Registrar suspeitos.
+- Relacionar acontecimentos.
+- Compartilhar descobertas.
+
+O Guardião poderá revelar pistas e documentos nesse quadro.
+
+Crie também uma biblioteca de arquivos da campanha.
+
+Ela poderá armazenar materiais visuais e documentos autorizados, organizados por:
+
+- Mistério.
+- Cena.
+- Ameaça.
+- NPC.
+- Local.
+- Pista.
+
+Permita reutilizar imagens existentes sem precisar realizar novo upload.
+
+26. TESTES OBRIGATÓRIOS
+
+Teste o funcionamento real com duas contas diferentes, em dispositivos ou navegadores separados.
+
+TESTE 1:
+Criar campanha.
+
+TESTE 2:
+Entrar na campanha por convite.
+
+TESTE 3:
+Criar personagem.
+
+TESTE 4:
+O Guardião visualizar a ficha em tempo real.
+
+TESTE 5:
+Realizar rolagem e compartilhar o resultado.
+
+TESTE 6:
+Gastar Sorte e aplicar o efeito real.
+
+TESTE 7:
+Aplicar dano e atualizar a ficha.
+
+TESTE 8:
+Conceder experiência e notificar o jogador.
+
+TESTE 9:
+Completar cinco XP e realizar uma evolução.
+
+TESTE 10:
+O jogador visualizar seu novo nível.
+
+TESTE 11:
+O Guardião criar e preparar diversos mistérios sem revelá-los aos jogadores.
+
+TESTE 12:
+O Guardião preparar várias cenas e ativar uma delas.
+
+TESTE 13:
+Os jogadores visualizarem apenas a cena ativa.
+
+TESTE 14:
+O Guardião revelar uma pista e ela aparecer aos participantes autorizados.
+
+TESTE 15:
+O Guardião excluir sua campanha com confirmação.
+
+TESTE 16:
+Um jogador sair sem excluir a campanha dos demais.
+
+TESTE 17:
+Enviar uma imagem diretamente da galeria do celular.
+
+TESTE 18:
+Utilizar a plataforma em uma tela pequena.
+
+TESTE 19:
+Verificar que nenhuma informação privada pode ser consultada pelos jogadores através das respostas do servidor.
+
+TESTE 20:
+Fechar e reabrir o navegador e verificar que os dados continuam persistidos.
+
+27. ORDEM DE IMPLEMENTAÇÃO
+
+Trabalhe em etapas, preservando o que já funciona.
+
+PRIMEIRA ETAPA:
+
+- Segurança.
+- Autenticação.
+- Banco de dados.
+- Permissões.
+- Sincronização.
+- Gerenciamento e exclusão de campanhas.
+
+SEGUNDA ETAPA:
+
+- Progressão dos caçadores.
+- Níveis.
+- Experiência.
+- Notificações.
+- Melhorias.
+- Histórico.
+
+TERCEIRA ETAPA:
+
+- Central do Guardião.
+- Planejamento de arcos.
+- Biblioteca de mistérios.
+- Preparação de cenas.
+- Fila de cenas.
+- Gerenciador de ameaças.
+- Controle de pistas.
+
+QUARTA ETAPA:
+
+- Upload de imagens.
+- Biblioteca de mídia.
+- Aprimoramento das fichas.
+- Melhorias para jogadores.
+- Quadro de investigação.
+
+QUINTA ETAPA:
+
+- Adaptação mobile.
+- Ajustes estéticos.
+- Correção dos movimentos.
+- Rolagens.
+- Testes completos.
+
+Não comece a implementar recursos novos enquanto estiver deixando funcionalidades essenciais quebradas.
+
+28. INSTRUÇÕES FINAIS
+
+Quero uma atualização profunda, mas sem destruir o projeto existente.
+
+Antes de alterar arquivos:
+
+1. Analise a arquitetura.
+2. Identifique dependências.
+3. Identifique funcionalidades existentes.
+4. Identifique bugs.
+5. Planeje as alterações de forma compatível com o projeto.
+
+Não substitua o projeto por um protótipo novo.
+
+Não remova funcionalidades existentes sem necessidade.
+
+Não crie botões decorativos.
+
+Não simule sincronização.
+
+Não utilize dados locais como se fossem compartilhados entre usuários.
+
+Não invente regras de Monstro da Semana.
+
+Não exponha informações privadas.
+
+Não deixe a experiência mobile para o final como um simples ajuste de CSS.
+
+A versão final deverá ter:
+
+- Uma experiência excelente para o Guardião.
+- Uma experiência excelente para os caçadores.
+- Preparação de campanhas e mistérios.
+- Controle de cenas e revelações.
+- Fichas funcionais.
+- Evolução de personagens.
+- Multiplayer persistente.
+- Exclusão segura de campanhas.
+- Upload de fotos do celular.
+- Interface adaptada para celular e computador.
+
+O objetivo é que um grupo de amigos consiga utilizar essa plataforma como sua mesa oficial para jogar Monstro da Semana, sem precisar ficar alternando entre fichas externas, rolagens manuais e documentos separados.
+
+Comece analisando o projeto atual e implemente as melhorias diretamente nos arquivos existentes.
+
+Ao concluir, apresente:
+
+- Funcionalidades implementadas.
+- Arquivos alterados.
+- Integrações configuradas.
+- Configurações externas necessárias.
+- Testes realizados.
+- Problemas ainda pendentes.
+
+Seja honesto sobre o que foi efetivamente implementado e testado.
+
+Não declare o projeto pronto enquanto as funcionalidades principais não estiverem funcionando.
